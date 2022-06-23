@@ -1,2 +1,2 @@
-# ds-store-dump
+# dsstore-dump
 Dump Files from .DS_Store
