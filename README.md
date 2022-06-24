@@ -1,6 +1,10 @@
-# dssd
+# ds-store-dump
 
 Dump Files from `.DS_Store`.
+
+Requires Python >= 3.10.x.
+
+If you not Arch/Manjaro user install latest Python using [pyenv](https://github.com/pyenv/pyenv).
 
 ```bash
 # Install
