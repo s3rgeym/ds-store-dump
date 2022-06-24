@@ -1,6 +1,6 @@
 import logging
 
-from .termcolors import Back, Fore, Style
+from .termcolors import Fore
 
 
 class ColoredFormatter(logging.Formatter):
@@ -15,5 +15,5 @@ class ColoredFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         message: str = super().format(record)
         if color := self.COLORS.get(record.levelname):
-            message = color + message + Style.RESET
+            message = color + message + Fore.RESET
         return message

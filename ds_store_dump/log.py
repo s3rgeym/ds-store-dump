@@ -1,12 +1,14 @@
 import logging
-import sys
 
 from .utils.logging import ColoredFormatter
 
 logger = logging.getLogger(__name__)
-# При форматировании цвета используются только при выводе в консоль
-formatter_class = ColoredFormatter if sys.stderr.isatty() else logging.Formatter
-formatter = formatter_class("[%(levelname)s]: %(asctime)s - %(message)s")
 console = logging.StreamHandler()
+
+# При форматировании цвета используются только при выводе в консоль
+formatter = (
+    ColoredFormatter if console.stream.isatty() else logging.Formatter
+)("%(levelname)-8s | %(message)s")
+
 console.setFormatter(formatter)
 logger.addHandler(console)

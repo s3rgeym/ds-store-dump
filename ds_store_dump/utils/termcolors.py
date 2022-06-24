@@ -8,7 +8,7 @@ class ColorMeta(type):
 
 
 class Color(metaclass=ColorMeta):
-    pass
+    RESET = 0
 
 
 class ForegroundColor(Color):
@@ -50,7 +50,6 @@ class BackgroundColor(Color):
 
 
 class StyleColor(Color):
-    RESET = 0
     BOLD = 1
     DIM = 2
     ITALIC = 3

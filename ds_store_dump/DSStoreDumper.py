@@ -7,14 +7,16 @@ from pathlib import Path
 from urllib.parse import unquote, urljoin
 
 import aiohttp
-from ds_store import DSStore, DSStoreEntry, buddy
+from ds_store import DSStore, buddy
 
 from .log import logger
 
 DOWNLOAD_RE = re.compile(
     '\.DS_Store|'
-    '.*\.(?i)(?:tar|tgz|zip|rar|sql|env|ya?ml|json|co?nf|config|ini|inc|sh|bash|zsh|py3?|bak|swp|dockerfile|txt|docx?|md)'
+    '.*\.(?i)(?:tar|t?gz|zip|rar|sql|env|ya?ml|json|co?nf|config|ini|inc|sh|bash|zsh|py3?|dockerfile|txt|docx?|md|bak|swp|[a-z]+[1~])'
 )
+
+EXTENSION_RE = re.compile(r'\.[a-z]{1,4}[0-9]?$', re.I)
 
 
 def normalize_ds_store_url(url: str) -> str:
@@ -30,11 +32,13 @@ def normalize_ds_store_url(url: str) -> str:
 @dataclasses.dataclass
 class DSStoreDumper:
     _: dataclasses.KW_ONLY
-    num_workers: int
-    output_directory: Path
-    override: bool
-    timeout: float
-    user_agent: str
+    num_workers: int = 10
+    output_directory: Path = Path('output')
+    override: bool = False
+    timeout: float = 15.0
+    user_agent: str = (
+        "Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)"
+    )
 
     @asynccontextmanager
     async def get_session(self) -> typing.AsyncIterable[aiohttp.ClientSession]:
@@ -96,17 +100,17 @@ class DSStoreDumper:
                                 if DOWNLOAD_RE.fullmatch(filename):
                                     await download_queue.put(file_url)
                                     continue
-                                # Каталог?
-                                if '.' not in filename:
+                                # Нет расширения - каталог?
+                                elif not EXTENSION_RE.search(filename):
                                     # Проверим есть ли в нем .DS_Store
                                     await download_queue.put(
                                         normalize_ds_store_url(file_url)
                                     )
                         except buddy.BuddyError:
-                            logger.error("invalid file format: %s", downloaded)
+                            logger.warn("invalid format: %s", downloaded)
                             downloaded.unlink()
                 except Exception as e:
-                    logger.error("An unexpected error: %s", e)
+                    logger.error("%s: %s", e.__class__.__qualname__, e)
                 finally:
                     download_queue.task_done()
 
