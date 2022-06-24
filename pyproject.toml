@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "ds-store-dump"
-version = "0.1.1"
-description = "Dump Files from .DS_Store"
+version = "0.1.2"
+description = "Dump backups and another files using .DS_Store"
 authors = ["s3rgeym <yamldeveloper@proton.me>"]
 license = "MIT"
 

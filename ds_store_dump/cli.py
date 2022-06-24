@@ -1,4 +1,5 @@
 import sys
+from functools import partial
 from pathlib import Path
 
 import click
@@ -7,35 +8,48 @@ from .DSStoreDumper import DSStoreDumper
 from .log import logger
 from .utils.decorators import async_run
 
+click_option = partial(click.option, show_default=True)
+
 
 # TODO: попробовать typer
 @click.command()
 @click.argument('urls', nargs=-1)
-@click.option('-w', '--num_workers', default=10, help="Number of workers")
-@click.option(
+@click_option(
+    '-w',
+    '--num_workers',
+    default=DSStoreDumper.num_workers,
+    help="Number of workers",
+)
+@click_option(
     '-o',
     '--output_directory',
     '--output',
     type=click.Path(file_okay=False, path_type=Path),
-    default='output',
+    default=DSStoreDumper.output_directory,
     help="Output directory",
 )
-@click.option(
+@click_option(
     '-O',
     '--override',
-    default=False,
+    default=DSStoreDumper.override,
     is_flag=True,
     help="Override existing files",
 )
-@click.option('-t', '--timeout', type=float, default=5.0, help="Client timeout")
-@click.option(
+@click_option(
+    '-t',
+    '--timeout',
+    type=float,
+    default=DSStoreDumper.timeout,
+    help="Client timeout",
+)
+@click_option(
     '-A',
     '--user_agent',
     '--agent',
-    default="Mozilla/5.0",
-    help="Client User-Agent string",
+    default=DSStoreDumper.user_agent,
+    help="Client User-Agent",
 )
-@click.option(
+@click_option(
     '-v', '--verbose', count=True, default=0, help="Be more verbosity"
 )
 @async_run
@@ -48,7 +62,7 @@ async def cli(
     user_agent: str,
     verbose: int,
 ) -> None:
-    log_levels = ['WARNING', 'INFO', 'DEBUG']
+    log_levels = ['ERROR', 'WARNING', 'INFO', 'DEBUG']
     level = log_levels[min(verbose, len(log_levels) - 1)]
     logger.setLevel(level=level)
     urls = list(urls)
