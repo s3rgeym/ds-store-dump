@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "dsstore-dump"
+name = "ds-store-dump"
 version = "0.1.0"
 description = "Dump Files from .DS_Store"
 authors = ["s3rgeym <yamldeveloper@proton.me>"]
@@ -21,3 +21,6 @@ pylint = "^2.14.3"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+ds-store-dump = "ds-store-dump:cli"
