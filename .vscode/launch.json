@@ -11,7 +11,7 @@
       "module": "ds_store_dump",
       "justMyCode": true,
       // Polska can not into space
-      "args": ["-O", "-vv", "https://projekty-moderna.pl/.DS_Store"],
+      "args": ["-O", "-vvv", "https://fnal.gov/"],
       "autoReload": { "enable": true }
     }
   ]
