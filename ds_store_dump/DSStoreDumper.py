@@ -38,8 +38,10 @@ class DSStoreDumper:
 
     @asynccontextmanager
     async def get_session(self) -> typing.AsyncIterable[aiohttp.ClientSession]:
-        timeout = aiohttp.ClientTimeout(total=self.timeout)
-        async with aiohttp.ClientSession(timeout=timeout) as session:
+        async with aiohttp.ClientSession(
+            connector=aiohttp.TCPConnector(verify_ssl=False),
+            timeout=aiohttp.ClientTimeout(total=self.timeout),
+        ) as session:
             session.headers.setdefault('User-Agent', self.user_agent)
             yield session
 
