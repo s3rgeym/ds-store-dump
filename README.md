@@ -21,7 +21,7 @@ $ pip install ds-store-dump
 
 # Usage
 $ ds-store-dump -h
-$ ds-store-dump url1 url2 url3 > output
+$ ds-store-dump url1 url2 url3 > found.txt
 $ ds-store-dump < urls.txt
 ```
 
