@@ -10,7 +10,6 @@
       "request": "launch",
       "module": "ds_store_dump",
       "justMyCode": true,
-      // Polska can not into space
       "args": ["-O", "-vvv", "https://fnal.gov/"],
       "autoReload": { "enable": true }
     }
